@@ -1,7 +1,7 @@
-from pymongo import MongoClient
-from bson import ObjectId
-import pyqrcode
-import png
+from pymongo import MongoClient #to connect mongoDB and vscode
+from bson import ObjectId 
+import pyqrcode #for creating qr code for the given user and password
+import png #for save the created qr image
 
 client=MongoClient("mongodb+srv://nigga2807:244466666@youtubemanager.8ssqukg.mongodb.net/") #this will link python to our mongodb database
 
@@ -10,16 +10,34 @@ pass_collections=data_base['PassStorage'] #ye jo hmne uske andar colllection bna
 
 #function to add password
 def add_password(platform, username, password):
-    pass
+    pass_collections.insert_one({'Platform Name': platform, "UserName": username, "Password": password})
+    print("data added succesfully :)")
 
-def update_password(id, platform, username, password):
-    pass
+#function to update the existinng password!!
+def update_password(id, password):
+    pass_collections.update_one(
+        {'_id': ObjectId(id)},
+        {"$set": {'Password': password}}
+    )
+    print("Passwords updated succesfully :)")
 
+#function to delete password!!
 def delete_password(id):
-    pass
+    pass_collections.delete_one(
+        {'_id': ObjectId(id)},
+    )
+    print("Data deleted succesfully :)")
 
 def show_passwords():
-    pass
+    for wordpass in pass_collections.find():
+        print(
+            f"ID: {wordpass['_id']},"
+            f"PLatform Name {wordpass['Platform Name']},"
+            f"Password {wordpass['Password']}"
+        )
+
+
+    
 
 def generate_password(platform, username):
     pass
@@ -42,16 +60,33 @@ def main():
     print("7. Encrypt a password")
     print("8. Exit")
     
-    user_choice=input("Enter your choice[1-8]: ")
+    user_choice=int(input("Enter your choice[1-8]: "))
 
     if user_choice==1:
-        add_password()
+        social_name=input("enter name of Social Platform: ")
+        user_name=input("enter your username: ")
+        passward=input("enter password: ")
+        add_password(social_name, user_name, passward)
 
     elif user_choice==2:
-        update_password()
+        id=input("enter the id associated with the credentials: ")
+        
+        if pass_collections.find_one({'_id': ObjectId(id)}) :
+            new_password=input("enter the new password: ")
+            confirm_new_password=input("eneter the new password: ")
+
+            if (new_password!= confirm_new_password):
+                print("both passwords should match!!")
+            
+            else:
+                update_password(id, confirm_new_password)
+
+        else:
+            print("entered id is invalid!!")
 
     elif user_choice==3:
-        delete_password()
+        id=input("enter the id for the credentials to be deleted")
+        delete_password(id)
 
     elif user_choice==4:
         show_passwords()
