@@ -1,12 +1,13 @@
 from cryptography.fernet import Fernet
 #will take a input as string and complete it into a complete random character!!
 
+key= Fernet.generate_key() #thisk key must be safe, as anyone with  key can decrypt data
+cipher_suite= Fernet(key)
 
 def encrypt_password(password):
-    
-    pass
-pwd=input("enter a password!!")
-def write_key():
-    key= Fernet.generate_key()
-    with open("key.key", 'wb') as key_file:
-        key_file.write(key)
+    encrypted_pass=cipher_suite.encrypt(password.encode())
+    return encrypted_pass
+
+def decrypt_password(encrypt_pass):
+    decrypted_password = cipher_suite.decrypt(encrypt_pass).decode()
+    return decrypted_password

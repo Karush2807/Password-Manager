@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from bson import ObjectId
+from encryption import encrypt_password, decrypt_password
 
 client=MongoClient("mongodb+srv://nigga2807:244466666@youtubemanager.8ssqukg.mongodb.net/") #this will link python to our mongodb database
 data_base=client["PasswordManager"] #ye jo hmara database hai, uska name hai
@@ -7,14 +8,16 @@ pass_collections=data_base['PassStorage'] #ye jo hmne uske andar colllection bna
 
 #function to add password
 def add_password(platform, username, password):
-    pass_collections.insert_one({'Platform Name': platform, "UserName": username, "Password": password})
+    encrypted_password=encrypt_password(password)
+    pass_collections.insert_one({'Platform Name': platform, "UserName": username, "Password": encrypted_password})
     print("data added succesfully :)")
 
 #function to update the existinng password!!
 def update_password(id, password):
+    encrypted_password=encrypt_password(password)
     pass_collections.update_one(
         {'_id': ObjectId(id)},
-        {"$set": {'Password': password}}
+        {"$set": {'Password': encrypted_password}}
     )
     print("Passwords updated succesfully :)")
 
@@ -28,8 +31,12 @@ def delete_password(id):
 #function to show list of all passwords
 def show_passwords():
     for wordpass in pass_collections.find():
+        decrypted_password = decrypt_password(wordpass['Password'])
+
         print(
             f"ID: {wordpass['_id']},"
             f"PLatform Name {wordpass['Platform Name']},"
-            f"Password {wordpass['Password']}"
+            f"User Name {wordpass['UserName']},"
+            f"Password {wordpass['decrypted_password']}"
+            
         )
