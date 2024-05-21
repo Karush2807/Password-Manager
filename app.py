@@ -2,6 +2,8 @@ from pymongo import MongoClient #to connect mongoDB and vscode
 from bson import ObjectId 
 import pyqrcode #for creating qr code for the given user and password
 import png #for save the created qr image
+import random
+import string
 
 client=MongoClient("mongodb+srv://nigga2807:244466666@youtubemanager.8ssqukg.mongodb.net/") #this will link python to our mongodb database
 
@@ -28,6 +30,7 @@ def delete_password(id):
     )
     print("Data deleted succesfully :)")
 
+#function to show list of all passwords
 def show_passwords():
     for wordpass in pass_collections.find():
         print(
@@ -37,10 +40,39 @@ def show_passwords():
         )
 
 
+def generate_password(platform, username, length):
+    if length<5:
+        raise ValueError("password length, should not be less than 5 characters!!")
+    
+    #defing all the datasets, we are using for creating password!!
+    upper=string.ascii_uppercase
+    lower=string.ascii_lowercase
+    digits=string.digits
+    special=string.digits
+    punctuations=string.punctuation
+
+    #ensuring selection from all the datasets!!
+    password=[
+        random.choice(upper),
+        random.choice(lower),
+        random.choice(digits),
+        random.choice(special),
+        random.choice(punctuations),
+    ]
+
+    all_char= upper+lower+digits+special+punctuations
+    password+=random.choices(all_char, k=length-5)
+
+    #shuffling the password for more randomness!!
+    random.shuffle(password)
+
+    #convert list to string and strng
+    generated_pass= ''.join(password)
+    return generated_pass
     
 
-def generate_password(platform, username):
-    pass
+
+    
 
 def create_qr(platform, username, password):
     pass
@@ -86,13 +118,21 @@ def main():
 
     elif user_choice==3:
         id=input("enter the id for the credentials to be deleted")
-        delete_password(id)
+        
+        if pass_collections.find_one({'_id': ObjectId(id)}):
+            delete_password(id)
+
+        else:
+            print("Invalid Id")
 
     elif user_choice==4:
         show_passwords()
 
     elif user_choice==5:
-        generate_password()
+        plat_name=input("enter which platform credentials you want to generate password!!")
+        userNAME=input("enter username for which you want to generate: ")
+        length=int(input("enter the length of password: "))
+        print(generate_password(plat_name, userNAME, 14))
 
     elif user_choice==6:
         create_qr()
