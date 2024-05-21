@@ -1,85 +1,13 @@
-from pymongo import MongoClient #to connect mongoDB and vscode
-from bson import ObjectId 
-import pyqrcode #for creating qr code for the given user and password
-import png #for save the created qr image
-import random
-import string
+from database_operation import add_password, update_password, delete_password, show_passwords
+from pass_generator import generate_password
+from qr_generator import create_qr
+from encryption import encrypt_password
 
+from pymongo import MongoClient
+from bson import ObjectId
 client=MongoClient("mongodb+srv://nigga2807:244466666@youtubemanager.8ssqukg.mongodb.net/") #this will link python to our mongodb database
-
 data_base=client["PasswordManager"] #ye jo hmara database hai, uska name hai
 pass_collections=data_base['PassStorage'] #ye jo hmne uske andar colllection bnayi hai, vo hai ye
-
-#function to add password
-def add_password(platform, username, password):
-    pass_collections.insert_one({'Platform Name': platform, "UserName": username, "Password": password})
-    print("data added succesfully :)")
-
-#function to update the existinng password!!
-def update_password(id, password):
-    pass_collections.update_one(
-        {'_id': ObjectId(id)},
-        {"$set": {'Password': password}}
-    )
-    print("Passwords updated succesfully :)")
-
-#function to delete password!!
-def delete_password(id):
-    pass_collections.delete_one(
-        {'_id': ObjectId(id)},
-    )
-    print("Data deleted succesfully :)")
-
-#function to show list of all passwords
-def show_passwords():
-    for wordpass in pass_collections.find():
-        print(
-            f"ID: {wordpass['_id']},"
-            f"PLatform Name {wordpass['Platform Name']},"
-            f"Password {wordpass['Password']}"
-        )
-
-
-def generate_password(platform, username, length):
-    if length<5:
-        raise ValueError("password length, should not be less than 5 characters!!")
-    
-    #defing all the datasets, we are using for creating password!!
-    upper=string.ascii_uppercase
-    lower=string.ascii_lowercase
-    digits=string.digits
-    special=string.digits
-    punctuations=string.punctuation
-
-    #ensuring selection from all the datasets!!
-    password=[
-        random.choice(upper),
-        random.choice(lower),
-        random.choice(digits),
-        random.choice(special),
-        random.choice(punctuations),
-    ]
-
-    all_char= upper+lower+digits+special+punctuations
-    password+=random.choices(all_char, k=length-5)
-
-    #shuffling the password for more randomness!!
-    random.shuffle(password)
-
-    #convert list to string and strng
-    generated_pass= ''.join(password)
-    return generated_pass
-    
-
-
-    
-
-def create_qr(platform, username, password):
-    pass
-
-def encrypt_password(password):
-    pass
-
 
 def main():
     print("Welcome to this Password Manager APP!!")
