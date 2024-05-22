@@ -9,5 +9,5 @@ def encrypt_password(password):
     return encrypted_pass
 
 def decrypt_password(encrypt_pass):
-    decrypted_password = cipher_suite.decrypt(encrypt_pass).decode()
+    decrypted_password = cipher_suite.decrypt(encrypt_pass.decode())
     return decrypted_password
