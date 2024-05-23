@@ -38,6 +38,7 @@ Welcome to the Password Manager application, a comprehensive tool designed to se
 
 3. **Set up MongoDB**:
 
+    ```
    Create a MongoDB Atlas account and set up a new cluster.
    Replace the MongoDB connection string in the main.py file with your own.
 
