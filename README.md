@@ -33,6 +33,7 @@ Welcome to the Password Manager application, a comprehensive tool designed to se
 
 2. **Install dependencies**:
 
+  ```bash
   pip install pyqrcode, cryptography
 
 3. **Set up MongoDB**:
