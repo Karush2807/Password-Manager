@@ -30,18 +30,20 @@ Welcome to the Password Manager application, a comprehensive tool designed to se
    ```bash
    git clone https://github.com/yourusername/password-manager.git
    cd password-manager
+  ```
 
 2. **Install dependencies**:
 
   ```bash
   pip install pyqrcode, cryptography
+  ```
 
 3. **Set up MongoDB**:
 
-    ```
+  ```bash
    Create a MongoDB Atlas account and set up a new cluster.
    Replace the MongoDB connection string in the main.py file with your own.
-
+  ```
    ## File Overview
 
 ### `main.py`
