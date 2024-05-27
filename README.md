@@ -27,7 +27,7 @@ Welcome to the Password Manager application, a comprehensive tool designed to se
 
 1. **Clone the repository**:
 
-   ```bash
+  ```bash
    git clone https://github.com/yourusername/password-manager.git
    cd password-manager
   ```
@@ -35,7 +35,7 @@ Welcome to the Password Manager application, a comprehensive tool designed to se
 2. **Install dependencies**:
 
   ```bash
-  pip install pyqrcode, cryptography
+    pip install pyqrcode, cryptography
   ```
 
 3. **Set up MongoDB**:
