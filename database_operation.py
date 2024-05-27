@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from bson import ObjectId
+from bson.binary import Binary
 from encryption import encrypt_password, decrypt_password
 
 client=MongoClient("mongodb+srv://nigga2807:244466666@youtubemanager.8ssqukg.mongodb.net/") #this will link python to our mongodb database
@@ -9,7 +10,9 @@ pass_collections=data_base['PassStorage'] #ye jo hmne uske andar colllection bna
 #function to add password
 def add_password(platform, username, password):
     encrypted_password=encrypt_password(password)
-    pass_collections.insert_one({'Platform Name': platform, "UserName": username, "Password": encrypted_password})
+    pass_collections.insert_one({'Platform Name': platform,
+                                "UserName": username,
+                                "Password": Binary(encrypted_password)})
     print("data added succesfully :)")
 
 #function to update the existinng password!!
@@ -37,6 +40,6 @@ def show_passwords():
             f"ID: {wordpass['_id']},"
             f"PLatform Name {wordpass['Platform Name']},"
             f"User Name {wordpass['UserName']},"
-            f"Password {wordpass['decrypted_password']}"
+            f"Password {decrypted_password}"
             
         )
